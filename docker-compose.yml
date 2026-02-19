@@ -1,0 +1,33 @@
+services:
+  # Banco de Dados PostgreSQL
+  db:
+    image: postgres:latest
+    container_name: vitthstore-db
+    restart: always
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+
+  # Mensageria RabbitMQ
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: vitthstore-mq
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}
+    ports:
+      - "5672:5672"   # Porta do Protocolo AMQP (Spring usa esta)
+      - "15672:15672" # Porta da Interface Web (Management)
+    volumes:
+      - rabbitdata:/var/lib/rabbitmq
+
+# Definição dos volumes para persistência de dados
+volumes:
+  pgdata:
+  rabbitdata:
