@@ -1,0 +1,39 @@
+$kind: http-request
+method: POST
+url: '{{baseUrl}}/auth/login'
+order: 1000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "email": "john.doe@example.com",
+      "password": "password123"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Response contains token field", function () {
+          const jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property("token");
+          pm.expect(jsonData.token).to.be.a("string").and.not.empty;
+      });
+
+      pm.test("Response contains tokenType field", function () {
+          const jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property("tokenType");
+          pm.expect(jsonData.tokenType).to.be.a("string");
+      });
+
+      pm.test("Response contains expiresIn field", function () {
+          const jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property("expiresIn");
+          pm.expect(jsonData.expiresIn).to.be.a("number");
+      });

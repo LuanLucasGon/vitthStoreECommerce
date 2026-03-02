@@ -43,3 +43,10 @@ build/
 
 #postman files
 .postman/
+
+### security keys ###
+src/main/resources/keys/
+
+### postman sensitive data ###
+postman/globals/
+postman/environments/
