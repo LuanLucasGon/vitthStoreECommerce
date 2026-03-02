@@ -37,3 +37,9 @@ build/
 
 ### env file
 .env
+
+#claude files
+.claude/
+
+#postman files
+.postman/
